@@ -1,0 +1,26 @@
+def get_input():
+    return input("Enter a list of numbers: ")
+
+def parse_numbers(input_str):
+    return [int(num.strip()) for num in input_str.split(",")]
+
+def count_digits(numbers):
+    digit_counts = {str(d): 0 for d in range(10)}
+    for number in numbers:
+        for digit in str(number):
+            if digit in digit_counts:
+                digit_counts[digit] += 1
+    return digit_counts
+
+def print_counts(digit_counts):
+    for digit in range(10):
+        print(f"{digit}  {digit_counts[str(digit)]}")
+
+def main():
+    input_str = get_input()
+    numbers = parse_numbers(input_str)
+    digit_counts = count_digits(numbers)
+    print_counts(digit_counts)
+
+if __name__ == "__main__":
+    main()
