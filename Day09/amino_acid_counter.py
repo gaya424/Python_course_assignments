@@ -1,5 +1,6 @@
 import os
 from collections import defaultdict
+from typing import Dict
 
 codon_table_raw = {
     'Phe': ['TTT', 'TTC'],
@@ -32,7 +33,15 @@ for aa, codons in codon_table_raw.items():
         codon_to_aa[codon] = aa
 
 def read_sequence_from_file(filepath):
-    """Reads and cleans the DNA sequence from a .txt or .fasta file."""
+    """
+    Reads a DNA sequence from a .txt or .fasta file, removing headers and non-DNA characters.
+
+    Args:
+        filepath: Path to the DNA sequence file.
+
+    Returns:
+        A cleaned DNA sequence string.
+    """
     with open(filepath, 'r') as f:
         lines = f.readlines()
     
@@ -41,7 +50,21 @@ def read_sequence_from_file(filepath):
     sequence = ''.join(filter(lambda x: x in 'ACGTacgt', sequence.upper()))
     return sequence
 
-def count_amino_acids(sequence): ## documentation: this function splits the DNA sequence into codons, matches them to the dictionary of amino acids, and counts the occurrences of amino acids.
+
+def count_amino_acids(sequence):
+    """
+    Counts occurrences of amino acids in a DNA sequence (ignoring STOP codons).
+
+    Args:
+        sequence: DNA sequence string.
+
+    Returns:
+        Dictionary mapping amino acid names to their counts.
+
+    Example:
+        >>> count_amino_acids('ATGCTT')
+        {'Met': 1, 'Leu': 1}
+    """ 
     aa_counts = defaultdict(int)
     for i in range(0, len(sequence) - 2, 3):
         codon = sequence[i:i+3]
@@ -51,6 +74,7 @@ def count_amino_acids(sequence): ## documentation: this function splits the DNA 
         if aa and aa != 'STOP':
             aa_counts[aa] += 1
     return aa_counts
+
 
 def main():
     filepath = input("Enter the path to the DNA sequence file: ").strip()
